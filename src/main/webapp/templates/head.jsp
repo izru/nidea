@@ -13,7 +13,9 @@
     <style>
     section {
     div{}}
-	.row {padding-left:50px;}
+    .container {
+     padding: 25px 25px;}
+	/*.row {padding-left:50px;}*/
 
 </style>
   </head>
