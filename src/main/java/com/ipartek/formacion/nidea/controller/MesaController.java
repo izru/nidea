@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ipartek.formacion.nidea.model.MaterialDAO;
+import com.ipartek.formacion.nidea.pojo.Alert;
 import com.ipartek.formacion.nidea.pojo.Material;
 import com.ipartek.formacion.nidea.pojo.Mesa;
 
@@ -28,6 +30,7 @@ public class MesaController extends HttpServlet {
 			throws ServletException, IOException {
 		// crear mesa
 		Mesa m = new Mesa();
+		MaterialDAO dao = new MaterialDAO();
 		// recoger parametros, SIEMPRE String
 		String sPatas = request.getParameter("patas");
 		String sDimension = request.getParameter("dimension");
@@ -36,7 +39,19 @@ public class MesaController extends HttpServlet {
 		if (sPatas != null) {
 			// vengo del formulario y relleno con los datos del formulario
 			int patas = Integer.parseInt(sPatas);
-			m.setNumPatas(patas);
+			try {
+				m.setNumPatas(patas); // como es una excepcion, obliga a lanzarla o capturla
+			} catch (Exception e) {
+				try {
+					m.setNumPatas(1);
+
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+
+				request.setAttribute("alert", new Alert(e.getMessage(), Alert.TIPO_WARNING));
+
+			}
 			/*
 			 * si hubisemos usado arrays String sMaterial =
 			 * request.getParameter("material"); // vengo del formulario y relleno con los
@@ -66,9 +81,12 @@ public class MesaController extends HttpServlet {
 		}
 
 		// enviar atributos a la JSP
+
 		request.setAttribute("mesa", m);// request.setAttribute(nombre, objeto);
-		request.setAttribute("materiales", Material.NOMBRES);
-		request.setAttribute("materialesCodigo", Material.IDS);
+		request.setAttribute("materiales", dao.getAll());
+
+		// request.setAttribute("materiales", Material.NOMBRES);
+		// request.setAttribute("materialesCodigo", Material.IDS);
 		/*
 		 * si hubisesemos usado array en vez de clase request.setAttribute("materiales",
 		 * Mesa.MATERIALES_LISTA); request.setAttribute("materialesCodigo",

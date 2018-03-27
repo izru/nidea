@@ -10,4 +10,5 @@
 <h2>Hello World! <%=nombre %></h2>
 <p><%=hora%></p>
 <a href="generar-mesa">Quieres comprar una mesa?</a>
+<a href="calculadora">Calculadora</a><!-- llama al maping del controlador -->
 <jsp:include page="templates/footer.jsp"></jsp:include>

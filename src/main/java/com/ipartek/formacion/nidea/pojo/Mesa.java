@@ -113,18 +113,29 @@ public class Mesa {
 		return material;
 	}
 
+	/**
+	 * 
+	 * @param material
+	 */
 	public void setMaterial(Material material) {
 		this.material = material;
 	}
 
 	/**
-	 * Cambio el numero de patas, si es menor que 0 asignamos valor 0
+	 * Cambio el numero de patas, si es menor que 0 asignamos valor 0 Seteamos el
+	 * numero de patas de la Mesa
 	 * 
 	 * @param numPatas
 	 *            int
+	 * @throws MesaException
+	 *             lanza exception si numeroPatas <=0
 	 */
-	public void setNumPatas(int numPatas) {
-		this.numPatas = (numPatas <= 0) ? 1 : numPatas;
+	public void setNumPatas(int numPatas) throws MesaException {
+		if (numPatas <= 0) {
+			throw new MesaException(MesaException.MENSAJE_PATAS);
+		}
+		this.numPatas = numPatas;
+		// this.numPatas = (numPatas <= 0) ? 1 : numPatas;
 	}
 
 	// 5.3 otros metodos
@@ -155,7 +166,7 @@ public class Mesa {
 		int result = 1;
 		result = prime * result + ((color == null) ? 0 : color.hashCode());
 		result = prime * result + dimension;
-		result = prime * result + numeroPatas;
+		result = prime * result + numPatas;
 		return result;
 	}
 

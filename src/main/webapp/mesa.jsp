@@ -1,13 +1,19 @@
 <%@page import="com.ipartek.formacion.nidea.pojo.Mesa"%>
-<jsp:include page="templates/head.jsp"></jsp:include>
-<jsp:include page="templates/navbar.jsp"></jsp:include>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.ipartek.formacion.nidea.pojo.Material"%>
+<jsp:include page="/templates/head.jsp"></jsp:include>
+<jsp:include page="/templates/navbar.jsp"></jsp:include>
+<jsp:include page="/templates/alert.jsp"></jsp:include>
+
 
 <%
 	//recoger atributo del controlador, si es que existe
 	
 	Mesa mesa = (Mesa)request.getAttribute("mesa");
-	String[] materiales = (String[])request.getAttribute("materiales");
-	int[] materialesCodigo = (int[])request.getAttribute("materialesCodigo");
+	ArrayList<Material> materiales = (ArrayList<Material>)request.getAttribute("materiales");
+	//sin dao
+	//String[] materiales = (String[])request.getAttribute("materiales");
+	//int[] materialesCodigo = (int[])request.getAttribute("materialesCodigo");
 
 %>
 <div class="container">
@@ -29,15 +35,25 @@
     	<div class="col-sm-10">
     		 		
       			<select  class="form-control" name="material">
-		
-			<% for ( int i=0; i < materiales.length; i++ ) { %>
-			<option value="<%=materialesCodigo[i]%>" 
-			        <%=(mesa.getMaterial().getId()==materialesCodigo[i])?"selected":""%>>
-				<%=materiales[i]%>
+		<!--  sin dao
+			< % for ( int i=0; i < materiales.length; i++ ) { %>
+			<option value="< %=materialesCodigo[i]%>" 
+			        < %=(mesa.getMaterial().getId()==materialesCodigo[i])?"selected":""%>>
+				< %=materiales[i]%>
 			</option>
-		<% } %>
+		< % } %>
 		
-
+-->	
+		<% 
+					Material m = null;
+					for ( int i=0; i < materiales.size(); i++ ) {
+						m = materiales.get(i);
+				%>
+					<option value="<%=m.getId()%>" 
+					        <%=(mesa.getMaterial().getId() == m.getId())?"selected":""%>>
+						<%=m.getNombre()%> - <%=m.getPrecio()%>&euro;
+ 					</option>
+ 				<% } %>
     		</select>
     	</div>
   	</div>
@@ -48,16 +64,15 @@
 	</div>
 	
 	<fieldset class="form-group">
-    <div class="row">
-      <p class="col-sm-2">¿Quieres personalizar el color?</p>
-      <div class="col-sm-10">
-        <div class="form-check">
-          <input type="checkbox" name="custom" onclick="showColor()" id="custom" <%=(mesa.isCustom())?"checked":""%>>
-			<input type="color" name="color" id="color" value="<%=mesa.getColor()%>"> 
-          
-        </div>            
-      </div>
-    </div>
+    <div class="checkbox" onclick="showColor()" >		
+			<p>¿ Quieres Personalizar el Color ? 
+				<input type="checkbox" name="custom" 
+				       id="custom" <%=(mesa.isCustom())?"checked":""%> 
+				       data-toggle="toggle" data-on="Si" data-off="No">
+				<input type="color" name="color" id="color" value="<%=mesa.getColor()%>"> 
+			</p>
+		</div>
+
   </fieldset>
 	
 	<div class="row">
